@@ -29,17 +29,23 @@
 
         render() {
           const { products, categories } = this.state;
+          const _products = products.map(product => {
+            return { ...product, category: categories.find(category => category.id === product.categoryId)}
+          });
+          const _categories = categories.map(category => {
+            return { ...category, products: products.filter(product => product.categoryId === category.id)}
+          });
           return (
             <div>
               <h1>My App</h1>
               <ul>
                 {
-                  products.map(product => <li key={ product.id } > {product.name} {product.category && product.category.name}</li>)
+                  _products.map(product => <li key={ product.id } > {product.name} {product.category && product.category.name}</li>)
                 }
               </ul>
               <ul>
                 {
-                  categories.map(category => <li key={ category.id } > {category.name}
+                  _categories.map(category => <li key={ category.id } > {category.name}
                   <ul>
                 {
                     category.products.map(product => <li key= {product.id}>{product.name}</li>)

@@ -3,7 +3,7 @@ const db = require('./db');
 
 app.get('/products', async(req, res, next) => {
   try {
-    res.send( await db.models.Product.findAll({ include: [ db.models.Category] }));
+    res.send( await db.models.Product.findAll());
   }
   catch(ex) {
     next(ex);
@@ -14,7 +14,7 @@ app.get('/products', async(req, res, next) => {
 
 app.get('/categories', async(req, res, next) => {
   try {
-    res.send( await db.models.Category.findAll({ include: [db.models.Product]}));
+    res.send( await db.models.Category.findAll());
   }
   catch(ex) {
     next(ex);
