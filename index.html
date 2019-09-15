@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js'></script>
+
+  </head>
+
+  <body>
+    <div id='root'></div>
+
+    <script type='text/babel'>
+      class App extends React.Component{
+        constructor() {
+          super();
+          this.state = {
+            categories: [],
+            products: []
+          };
+        }
+        async componentDidMount() {
+          const responses = await Promise.all([
+            axios.get('/api/products'),
+            axios.get('/api/categories')
+          ]);
+          this.setState({products: responses[0].data, categories: responses[1].data})
+        }
+
+        render() {
+          const { products, categories } = this.state;
+          return (
+            <div>
+              <h1>My App</h1>
+              <ul>
+                {
+                  products.map(product => <li key={ product.id } > {product.name} {product.category && product.category.name}</li>)
+                }
+              </ul>
+              <ul>
+                {
+                  categories.map(category => <li key={ category.id } > {category.name} {category.id && category.name}</li>)
+                  <ul>
+                    {
+                    category.products.map(product => <li key= {product.id}>{product.name}</li>)
+                    }
+                  </ul>
+                }
+              </ul>
+            </div>
+          );
+        }
+      };
+
+      ReactDOM.render(<App />, document.querySelector('#root'));
+    </script>
+
+  </body>
+
+
+</html>

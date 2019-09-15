@@ -48,6 +48,7 @@ const Category = conn.define('category', {
 });
 
 Product.belongsTo(Category)
+Category.hasMany(Product)
 
 const syncAndSeed = async () => {
 
